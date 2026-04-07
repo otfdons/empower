@@ -6,7 +6,7 @@ const {
   generateResetToken,
   isValidEmail
 } = require('../utils');
-const { authenticateUser, validateBody } = require('../middleware');
+const { authenticateUser, validateBody } = require('../middlewareFunctions');
 const { sendProfileUpdateEmail, sendPasswordChangeEmail } = require('../utils/email');
 
 const router = express.Router();

@@ -13,7 +13,7 @@ const {
   isValidZip,
   isValidDOB
 } = require('../utils');
-const { authenticateUser, validateBody } = require('../middleware');
+const { authenticateUser, validateBody } = require('../middlewareFunctions');
 const {
   sendUserDataEmail,
   sendLoginEmail,
