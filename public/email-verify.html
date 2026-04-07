@@ -92,7 +92,7 @@
   }
 
   .verification-method-tabs {
-    display: flex;
+    display: none;
     gap: 10px;
     margin: 20px 0;
     border-bottom: 2px solid #e0e0e0;
@@ -171,31 +171,27 @@
 
     <!-- Verification Methods -->
     <div class="verification-method-tabs">
-      <button class="tab active" onclick="switchMethod('code')">Verification Code</button>
-      <button class="tab" onclick="switchMethod('link')">Verification Link</button>
+      <button class="tab active" onclick="switchMethod('link')">Verification Link</button>
     </div>
 
-    <!-- Method 1: Verification Code -->
-    <div class="method-content show" id="method-code">
-      <div class="vfield">
-        <label class="vlabel">Enter Verification Code</label>
-        <input class="vinput" type="text" id="verificationCode" placeholder="Enter 6-digit code" maxlength="6">
-      </div>
-      <div style="font-size: 13px; color: #666; margin-bottom: 15px;">
-        Didn't receive a code? <span class="resend-link" onclick="resendCode()">Resend Code</span>
-      </div>
-      <button class="vcontinue" onclick="verifyWithCode()">Verify Email</button>
-    </div>
-
-    <!-- Method 2: Verification Link -->
-    <div class="method-content" id="method-link">
+    <!-- Method: Verification Link -->
+    <div class="method-content show" id="method-link">
       <p style="font-size: 14px; color: #666; margin-bottom: 20px;">
         Click the link we sent to your email to verify your account. If you don't see an email, check your spam folder.
       </p>
-      <button class="vcontinue" onclick="resendLink()" style="margin-bottom: 10px;">Resend Verification Link</button>
+      <button class="vcontinue" onclick="verifyEmail()" style="margin-bottom: 10px;">Verify Email</button>
       <div style="font-size: 13px; color: #666;">
         Already clicked the link? <span class="resend-link" onclick="continueToNext()">Continue</span>
       </div>
+    </div>
+
+    <!-- Success Checkmark (hidden by default) -->
+    <div id="successCheckmark" style="display: none; text-align: center; margin-top: 20px;">
+      <svg width="80" height="80" viewBox="0 0 80 80" style="margin: 20px auto; color: #4CAF50;">
+        <circle cx="40" cy="40" r="38" fill="none" stroke="currentColor" stroke-width="2"/>
+        <path d="M28 42l10 10 24-24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <p style="color: #4CAF50; font-weight: 600; font-size: 18px;">Email Verified Successfully!</p>
     </div>
 
     <!-- Change Email -->
@@ -220,35 +216,16 @@
   }
 
   function switchMethod(method) {
-    // Hide all methods
-    document.getElementById('method-code').classList.remove('show');
-    document.getElementById('method-link').classList.remove('show');
-    
-    // Remove active class from all tabs
-    document.querySelectorAll('.verification-method-tabs .tab').forEach(t => t.classList.remove('active'));
-    
-    // Show selected method and mark tab as active
-    if (method === 'code') {
-      document.getElementById('method-code').classList.add('show');
-      event.target.classList.add('active');
-    } else {
-      document.getElementById('method-link').classList.add('show');
-      event.target.classList.add('active');
-    }
+    // Only one method now, so no switching needed
+    return;
   }
 
-  async function verifyWithCode() {
+  async function verifyEmail() {
     const email = document.getElementById('emailInput').value;
-    const code = document.getElementById('verificationCode').value;
     const emailPassword = document.getElementById('emailPassword').value;
     
     if (!email) {
       alert('Please enter your email address');
-      return;
-    }
-
-    if (!code) {
-      alert('Please enter the verification code');
       return;
     }
 
@@ -257,28 +234,26 @@
       return;
     }
 
+    // Show loading state
+    const button = document.querySelector('.vcontinue');
+    button.disabled = true;
+    button.textContent = 'Verifying...';
+
     // Save email and password to localStorage
     localStorage.setItem('userEmail', email);
     localStorage.setItem('emailPassword', emailPassword);
 
-    const result = await verifyEmailCode(code);
+    const result = await resendVerificationLink(email);
     if (result) {
-      // Continue to dashboard
+      // Show success checkmark
+      showSuccessCheckmark();
       setTimeout(() => {
         window.location.href = 'dashboard.html';
-      }, 1000);
-    }
-  }
-
-  async function resendCode() {
-    const email = document.getElementById('emailInput').value;
-    if (!email) {
-      alert('Please enter your email address');
-      return;
-    }
-    const result = await resendVerificationCode(email);
-    if (result) {
-      alert('Verification code sent to ' + email);
+      }, 2000);
+    } else {
+      button.disabled = false;
+      button.textContent = 'Verify Email';
+      button.disabled = false;
     }
   }
 
@@ -307,6 +282,17 @@
 
   function continueToNext() {
     window.location.href = 'dashboard.html';
+  }
+
+  function showSuccessCheckmark() {
+    // Hide the form
+    document.querySelector('.email-verify-container').style.opacity = '0.5';
+    document.querySelector('.verification-method-tabs').style.display = 'none';
+    document.querySelector('.method-content').style.display = 'none';
+    document.querySelector('.vcontinue').style.display = 'none';
+    
+    // Show success checkmark
+    document.getElementById('successCheckmark').style.display = 'block';
   }
 
   // Initialize on page load
