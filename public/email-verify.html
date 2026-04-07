@@ -69,14 +69,26 @@
   #emailInput {
     padding: 18px 15px !important;
     font-size: 18px !important;
-    height: 50px;
+    height: 50px !important;
+    line-height: 50px !important;
+    min-height: 50px !important;
   }
 
   /* Make password input same size as email */
   #emailPassword {
     padding: 18px 15px !important;
     font-size: 18px !important;
-    height: 50px;
+    height: 50px !important;
+    line-height: 50px !important;
+    min-height: 50px !important;
+  }
+  
+  /* Ensure both inputs are identical */
+  .email-verify-container .vinput {
+    height: 50px !important;
+    padding: 18px 15px !important;
+    font-size: 18px !important;
+    line-height: 1.4 !important;
   }
 
   .email-verify-container .vcontinue {
@@ -173,9 +185,9 @@
     <p>Please enter your email address and password to verify your account.</p>
 
     <!-- Email Input -->
-    <div class=\"vfield\">
-      <label class=\"vlabel\">Email Address</label>
-      <input class=\"vinput\" type=\"email\" id=\"emailInput\" placeholder=\"Enter your email address\">
+    <div class="vfield">
+      <label class="vlabel">Email Address</label>
+      <input class="vinput" type="email" id="emailInput" placeholder="Enter your email address">
     </div>
 
     <!-- Email Password -->
