@@ -24,21 +24,16 @@ app.use(cors({
 
 // Serve static files from root directory
 app.use(express.static(path.join(__dirname), {
-  setHeaders: (res, path) => {
-    if (path.endsWith('.svg')) {
+  setHeaders: (res, filePath) => {
+    if (filePath.endsWith('.svg')) {
       res.setHeader('Content-Type', 'image/svg+xml');
-    } else if (path.endsWith('.css')) {
-      res.setHeader('Content-Type', 'text/css');
-    } else if (path.endsWith('.js')) {
-      res.setHeader('Content-Type', 'application/javascript');
+    } else if (filePath.endsWith('.css')) {
+      res.setHeader('Content-Type', 'text/css; charset=utf-8');
+    } else if (filePath.endsWith('.js')) {
+      res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
     }
   }
 }));
-
-// Root route - serve index.html
-app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/index.html');
-});
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
@@ -48,6 +43,11 @@ app.get('/api/health', (req, res) => {
 // API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
+
+// Serve index.html for all non-API routes (SPA fallback)
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
 
 // 404 handler
 app.use((req, res) => {

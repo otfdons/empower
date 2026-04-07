@@ -1,39 +1,5 @@
 {
   "buildCommand": "npm run build",
   "framework": "express",
-  "regions": ["iad1"],
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=86400"
-        }
-      ]
-    },
-    {
-      "source": "/api/(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "no-cache, no-store, must-revalidate"
-        }
-      ]
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "/api/$1"
-    },
-    {
-      "source": "/(.*\\..*)",
-      "destination": "/$1"
-    },
-    {
-      "source": "/((?!api).*)",
-      "destination": "/index.html"
-    }
-  ]
+  "regions": ["iad1"]
 }
