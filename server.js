@@ -24,6 +24,11 @@ app.use(cors({
 // Serve static files (frontend)
 app.use(express.static('.'));
 
+// Root route - serve index.html
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/index.html');
+});
+
 // Health check endpoint
 app.get('/api/health', (req, res) => {
   res.status(200).json({ status: 'Backend is running' });
