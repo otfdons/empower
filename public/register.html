@@ -115,40 +115,59 @@
   
   function verifyAccountMethod(method) {
     let data = { method };
+    let panelIndex = -1;
     
     if (method === 'no-pin') {
       const ssn = document.querySelector('.w-ssn').value;
       const zip = document.querySelector('.w-zip').value;
       const dob = document.querySelector('.w-dob').value;
+      panelIndex = 0;
       
       if (!ssn || !zip || !dob) {
         alert('Please fill in all fields (SSN: XXX-XX-XXXX, ZIP: 12345, DOB: MM/DD/YYYY)');
         return;
       }
       
+      showSuccess(panelIndex);
       verifyNoPin(ssn, zip, dob);
     } else if (method === 'pin') {
       const inputs = document.querySelectorAll('#p1 .w-half');
       const ssn = inputs[0].value;
       const pin = inputs[1].value;
+      panelIndex = 1;
       
       if (!ssn || !pin) {
         alert('Please fill in SSN and PIN');
         return;
       }
       
+      showSuccess(panelIndex);
       verifyWithPin(ssn, pin);
     } else if (method === 'enrollment-code') {
       const inputs = document.querySelectorAll('#p2 .w-enroll');
       const groupId = inputs[0].value;
       const code = inputs[1].value;
+      panelIndex = 2;
       
       if (!groupId || !code) {
         alert('Please fill in Group ID and Enrollment Code');
         return;
       }
       
+      showSuccess(panelIndex);
       verifyWithEnrollmentCode(groupId, code);
+    }
+  }
+  
+  function showSuccess(panelIndex) {
+    // Hide all success messages
+    document.querySelectorAll('.vsuccess').forEach(s => s.classList.remove('show'));
+    
+    // Show success for current panel
+    const panel = document.getElementById('p' + panelIndex);
+    const success = panel.querySelector('.vsuccess');
+    if (success) {
+      success.classList.add('show');
     }
   }
 </script>
