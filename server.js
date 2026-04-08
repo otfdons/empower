@@ -23,7 +23,10 @@ app.use(cors({
 }));
 
 // Serve static files from public directory
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public'), {
+  maxAge: '1h',
+  etag: false
+}));
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
@@ -34,8 +37,18 @@ app.get('/api/health', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 
-// Serve index.html for all non-API routes (SPA fallback)
+// Serve index.html for all non-API, non-static routes (SPA fallback)
 app.get('*', (req, res) => {
+  // Only serve index.html for actual page routes, not for assets
+  const requestedPath = req.path;
+  const hasExtension = requestedPath.includes('.');
+  
+  if (hasExtension) {
+    // This is likely a file request that wasn't found by static middleware
+    res.status(404).send('File not found');
+    return;
+  }
+  
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 

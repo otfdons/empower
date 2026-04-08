@@ -1,4 +1,18 @@
 {
   "framework": "express",
-  "regions": ["iad1"]
+  "regions": ["iad1"],
+  "env": {
+    "NODE_ENV": "production"
+  },
+  "headers": [
+    {
+      "source": "/.*\\.(js|css|png|jpg|jpeg|svg|ico)$",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    }
+  ]
 }
