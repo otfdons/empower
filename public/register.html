@@ -45,15 +45,15 @@
   <div class="vpanel show" id="p0">
     <div class="vfield">
       <label class="vlabel">Social Security Number</label>
-      <input class="vinput w-ssn focused" type="text" autofocus>
+      <input class="vinput w-ssn focused" type="number" inputmode="numeric" placeholder="XXX-XX-XXXX" autofocus oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
     </div>
     <div class="vfield">
       <label class="vlabel">ZIP / Postal Code</label>
-      <input class="vinput w-zip" type="text">
+      <input class="vinput w-zip" type="number" inputmode="numeric" placeholder="12345" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
     </div>
     <div class="vfield">
       <label class="vlabel">Date of Birth <span class="vlabel-hint">MM/DD/YYYY</span></label>
-      <input class="vinput w-dob" type="text">
+      <input class="vinput w-dob" type="number" inputmode="numeric" placeholder="01011990" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
     </div>
     <div class="vsuccess">
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
@@ -69,11 +69,11 @@
   <div class="vpanel" id="p1">
     <div class="vfield">
       <label class="vlabel">Social Security Number</label>
-      <input class="vinput w-half" type="text" placeholder="XXX-XX-XXXX">
+      <input class="vinput w-half" type="number" inputmode="numeric" placeholder="XXX-XX-XXXX" oninput="this.value = this.value.replace(/[^0-9-]/g, '')">
     </div>
     <div class="vfield">
       <label class="vlabel">PIN</label>
-      <input class="vinput w-half" type="password" placeholder="1234">
+      <input class="vinput w-half" type="number" inputmode="numeric" placeholder="1234" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
     </div>
     <div class="vsuccess">
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
@@ -89,11 +89,11 @@
   <div class="vpanel" id="p2">
     <div class="vfield">
       <label class="vlabel">Group Id / Plan Number</label>
-      <input class="vinput w-enroll" type="text" placeholder="GROUP123">
+      <input class="vinput w-enroll" type="text" placeholder="GROUP123" oninput="this.value = this.value.toUpperCase()">
     </div>
     <div class="vfield">
       <label class="vlabel">Plan Enrollment Code</label>
-      <input class="vinput w-enroll" type="text" placeholder="ENROLL456">
+      <input class="vinput w-enroll" type="text" placeholder="ENROLL456" oninput="this.value = this.value.toUpperCase()">
     </div>
     <button class="vcontinue" onclick="verifyAccountMethod('enrollment-code')" style="margin-top:14px;">CONTINUE</button>
   </div>
